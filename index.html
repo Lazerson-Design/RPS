@@ -6,7 +6,7 @@
     <title>Rock Paper Scissors Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gray-100 flex items-center justify-center h-screen">
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full md:w-96">
       <div class="mb-4">
         <h2 class="text-2xl font-bold">Score</h2>
@@ -16,21 +16,42 @@
         </div>
       </div>
       <div class="mb-4">
-        <h3 class="text-xl font-semibold mb-2">Choose:</h3>
+        <h3 class="text-xl font-semibold mb-2">Choose your Fighter:</h3>
         <div id="selection" class="flex justify-around gap-3">
-          <button class="bg-blue-400 text-white py-2 px-4 rounded" id="rock">
-            Rock
+          <button
+            class="bg-blue-200 rounded flex items-center justify-center"
+            id="rock"
+          >
+            <img
+              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Rock.svg"
+              alt="SVG Icon"
+              class="w-40 h-40"
+            />
           </button>
-          <button class="bg-green-400 text-white py-2 px-4 rounded" id="paper">
-            Paper
+          <button
+            class="bg-emerald-200 rounded flex items-center justify-center"
+            id="paper"
+          >
+            <img
+              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Paper.svg"
+              alt="SVG Icon"
+              class="w-40 h-40"
+            />
           </button>
-          <button class="bg-red-400 text-white py-2 px-4 rounded" id="scissors">
-            Scissors
+          <button
+            class="bg-red-200 rounded flex items-center justify-center"
+            id="scissors"
+          >
+            <img
+              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Scissors.svg"
+              alt="SVG Icon"
+              class="w-40 h-40"
+            />
           </button>
         </div>
       </div>
       <div class="mb-4">
-        <h3 class="text-xl font-semibold mb-2">Result:</h3>
+        <h3 class="text-xl font-semibold mb-2">FIGHT!</h3>
         <div id="result" class="bg-gray-200 py-4 rounded">No result yet</div>
       </div>
       <button
