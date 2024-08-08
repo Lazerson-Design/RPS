@@ -8,6 +8,28 @@
     <head>
       <!-- Other head elements -->
       <style>
+        @font-face {
+  font-family: 'SSF4 ABUKET';
+  src: url('D:\Dokumente\BOOTCAMP\SchereSteinPapier\Font') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+#font, #vs {
+  font-family: 'SSF4 ABUKET', sans-serif; /* Fallback to sans-serif */
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+#result {
+  font-family: 'SSF4 ABUKET', sans-serif; /* Fallback to sans-serif */
+  font-size: 30px;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
         @keyframes moveDownAndFadeIn {
           from {
             transform: translateY(
@@ -35,6 +57,25 @@
         .move-down-fade {
           animation: moveDownAndFade 500ms forwards;
         }
+
+        .move-up-fade-in {
+          animation: moveUpAndFadeIn 500ms 2s forwards;
+        }
+
+        /* Define the keyframes for the fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Apply the fade-in animation to the element */
+.fade-in {
+  animation: fadeIn 10ms ease-in forwards; /* Adjust duration and timing function as needed */
+}
       </style>
     </head>
   </head>
@@ -59,7 +100,7 @@
                 style="
                   font-size: clamp(3rem, 4vw, 6rem);
                   font-weight: 700;
-                  color: red;
+                  color: #f87171;
                 "
                 >0</span
               >
@@ -72,6 +113,7 @@
                   font-weight: 600;
                   position: relative;
                   top: -4px;
+                  color: #0a0a0a;
                 "
                 >:</span
               >
@@ -83,7 +125,7 @@
                 style="
                   font-size: clamp(3rem, 4vw, 6rem);
                   font-weight: 700;
-                  color: blue;
+                  color: #60a5fa;
                 "
                 >0</span
               >
@@ -129,7 +171,7 @@
         -->
       </div>
       <div class="mb-4">
-        <h3 class="text-xl font-semibold mb-2">Choose your Fighter:</h3>
+        <h3 id=font class="text-xl font-semibold mb-2">Choose your Fighter:</h3>
         <div id="selection" class="flex justify-around gap-3">
           <button
             class="bg-blue-200 rounded flex items-center justify-center"
@@ -165,21 +207,26 @@
       </div>
 
       <div class="mb-4">
-        <h3 class="text-xl font-semibold mb-2">FIGHT!</h3>
-
-        <div id="battlefield" class="bg-gray-200 py-4 rounded">
-          Prepare to fight!
+        <h3 id=font class="text-xl font-semibold mb-2">FIGHT!</h3>
+      
+        <div
+          id="battlefield"
+          class="bg-gray-200 py-4 rounded flex justify-around items-center"
+        >
+          <div id="user-choice" class="flex-1 text-center"></div>
+          <div id="vs" class="text-center font-bold text-2xl mx-4">VS</div>
+          <div id="computer-choice" class="flex-1 text-center"></div>
         </div>
-
-        <div id="result" class="bg-gray-200 py-4 rounded">No result yet</div>
+      
+        <div id="result" class="bg-gray-200 py-4 rounded mt-4">No result yet</div>
+        
+        <button
+          class="bg-purple-500 text-white py-2 px-4 rounded mt-4"
+          id="play-button"
+        >
+          Play Round
+        </button>
       </div>
-      <button
-        class="bg-purple-500 text-white py-2 px-4 rounded mt-4"
-        id="play-button"
-      >
-        Play Round
-      </button>
-    </div>
     <script src="script.js"></script>
   </body>
 </html>

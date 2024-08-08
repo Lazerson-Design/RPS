@@ -14,51 +14,59 @@ function getComputerChoice() {
 
 // Function to determine the winner of the round
 function determineWinner(userChoice, computerChoice) {
+  // Find the result element
+  const resultElement = document.getElementById("result");
+
   if (userChoice === computerChoice) {
-    //wenn Benutzer und Computer gleich sind
-    return "It's a tie!"; //dann "Its a tie" Unentschieden
+    // If both choices are the same
+    setTimeout(() => {
+      resultElement.innerText = "Friendship!"; // Update result text after 2 seconds
+    }, 1500);
   } else if (
-    (userChoice === "rock" && computerChoice === "scissors") || //wenn Benutzer Stein und Computer Schere
-    (userChoice === "paper" && computerChoice === "rock") || //wenn Benutzer Papier und Computer Stein
-    (userChoice === "scissors" && computerChoice === "paper") //wenn Benutzer Schere und Computer Papier
+    (userChoice === "rock" && computerChoice === "scissors") || // Rock beats Scissors
+    (userChoice === "paper" && computerChoice === "rock") || // Paper beats Rock
+    (userChoice === "scissors" && computerChoice === "paper") // Scissors beats Paper
   ) {
-    userScore++; //dann wird userScore um 1 erhöht ++
-    return "You win!"; //dann wird "You win!" angezeigt
+    userScore++; // Increase user score
+    setTimeout(() => {
+      resultElement.innerText = "You Win!"; // Update result text after 2 seconds
+    }, 1500);
   } else {
-    //bei allem anderem
-    computerScore++; //wird computerScore um 1 erhöht ++
-    return "Computer wins!"; //wird "Computer wins!" angezeigt
+    computerScore++; // Increase computer score
+    setTimeout(() => {
+      resultElement.innerText = "You LOSE!"; // Update result text after 2 seconds
+    }, 1500);
   }
 }
 
 // Function to update the scores in the DOM
 function updateScores() {
-  document.getElementById("user-score").innerText = userScore; //liest die div mit "id = user-score"
-  document.getElementById("computer-score").innerText = computerScore; //liest die div mit "id = computer-score"
+  setTimeout(() => {
+    document.getElementById("user-score").innerText = userScore; //liest die div mit "id = user-score"
+    document.getElementById("computer-score").innerText = computerScore; //liest die div mit "id = computer-score"
+  }, 1000); // 1000 milliseconds = 1 second
 }
 //Zahl wird nach function determineWinner(userChoice, computerChoice) geupdated
 
 // Function to handle the play button click event
 function playRound() {
   if (!userSelection) {
-    //wenn Benutzer nichts ausgewählt hat
-    alert("Please make a selection!"); //dann kommt alert "Please make a selection!"
-    return; //und Spiel wird resetet
+    alert("Please make a selection!");
+    return;
   }
 
-  const computerChoice = getComputerChoice(); //Funktion des Computers wird aufgerufen, also Zufallszahl erstellt
-  const result = determineWinner(userSelection, computerChoice); //Funktion zum Bestimmen des Siegers wird aufgerufen
+  const computerChoice = getComputerChoice();
+  const result = determineWinner(userSelection, computerChoice);
 
-  document.getElementById(
-    "result" //div mit Id "result" wird selektiert
-  ).innerText = `You chose ${userSelection}, computer chose ${computerChoice}. ${result}`;
-  //Es wird etsprechend in di div eingefügt was man gewählt hat, was Computer gewählt hat und wer gewonnen hat
-  updateScores(); //funktion zum updaten des scoreboards wird aufgerufen
-  userSelection = ""; // Reset user selection after the round
-  //moveRock(userSelection); //Funktion die die SVG bewegt
-  moveRock();
-  updateBattlefield();
-  unmarkSelection(); // Unmark the selection after the round
+  document.getElementById("result").innerText = `${result}`;
+  updateScores();
+
+  updateBattlefield(userSelection, computerChoice);
+  unmarkSelection();
+
+  userSelection = ""; // Reset user selection after updating the battlefield
+
+  clearBattlefield(userSelection, computerChoice);
 }
 
 // Function to move the SVG based on the user selection
@@ -74,6 +82,10 @@ function moveRock() {
   const svgElement = rockButton.querySelector("img");
   if (svgElement) {
     svgElement.classList.add("move-down-fade");
+    setTimeout(() => {
+      svgElement.classList.remove("move-down-fade");
+      svgElement.classList.add("move-up-fade-in");
+    }, 2000); // Wait 2 seconds before the reappear animation
   }
 }
 
@@ -83,6 +95,10 @@ function movePaper() {
   const svgElement = paperButton.querySelector("img");
   if (svgElement) {
     svgElement.classList.add("move-down-fade");
+    setTimeout(() => {
+      svgElement.classList.remove("move-down-fade");
+      svgElement.classList.add("move-up-fade-in");
+    }, 2000); // Wait 2 seconds before the reappear animation
   }
 }
 
@@ -92,36 +108,380 @@ function moveScissors() {
   const svgElement = scissorsButton.querySelector("img");
   if (svgElement) {
     svgElement.classList.add("move-down-fade");
+    setTimeout(() => {
+      svgElement.classList.remove("move-down-fade");
+      svgElement.classList.add("move-up-fade-in");
+    }, 2000); // Wait 2 seconds before the reappear animation
   }
 }
 
-//BATTLEFIELD
-function updateBattlefield() {
-  // Select the div with id "battlefield"
+// Function to move the SVG for the user's choice inside the battlefield
+function updateBattlefield(userChoice, computerChoice) {
+  const userChoiceDiv = document.getElementById("user-choice");
+  const computerChoiceDiv = document.getElementById("computer-choice");
+
+  userChoiceDiv.innerHTML = "";
+  computerChoiceDiv.innerHTML = "";
+
+  const userImgElement = document.createElement("img");
+  const computerImgElement = document.createElement("img");
+
+  switch (userChoice) {
+    case "rock":
+      userImgElement.src =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/395545eb0d14a6b40d72eed1a26390f0286e2a8e/Rock.svg";
+      moveRock();
+      break;
+    case "paper":
+      userImgElement.src =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Paper.svg";
+      movePaper();
+      break;
+    case "scissors":
+      userImgElement.src =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Scissors.svg";
+      moveScissors();
+      break;
+    default:
+      userImgElement.src = "";
+      break;
+  }
+
+  switch (computerChoice) {
+    case "rock":
+      computerImgElement.src =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/395545eb0d14a6b40d72eed1a26390f0286e2a8e/Rock.svg";
+      break;
+    case "paper":
+      computerImgElement.src =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Paper.svg";
+      break;
+    case "scissors":
+      computerImgElement.src =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Scissors.svg";
+      break;
+    default:
+      computerImgElement.src = "";
+      break;
+  }
+
+  userImgElement.style.width = "200px";
+  userImgElement.style.height = "200px";
+  userImgElement.style.opacity = "0";
+  userImgElement.style.animationDelay = "500ms";
+  userImgElement.classList.add("move-down-fade-in");
+
+  computerImgElement.style.width = "200px";
+  computerImgElement.style.height = "200px";
+  computerImgElement.style.opacity = "0";
+  computerImgElement.style.animationDelay = "700ms";
+  computerImgElement.classList.add("move-down-fade-in");
+
+  userChoiceDiv.appendChild(userImgElement);
+  computerChoiceDiv.appendChild(computerImgElement);
+}
+
+// Function to clear and update the battlefield with result and restore original structure
+function clearBattlefield(userChoice, computerChoice) {
   const battlefieldDiv = document.getElementById("battlefield");
 
-  // Clear the text content of the div
+  // Add a 1.5-second delay before clearing the content
+  setTimeout(() => {
+    battlefieldDiv.innerHTML = ""; // Clear all content inside the battlefield div
+  }, 1500);
+
+  // After clearing, update the battlefield with the result
+  setTimeout(() => {
+    finalSVG(); // Update the battlefield with the result
+  }, 1500);
+
+  // Add a 1-second delay before restoring the original structure
+  setTimeout(() => {
+    // Restore the original structure of the battlefield div
+    battlefieldDiv.innerHTML = `
+      <div id="user-choice" class="flex-1 text-center"></div>
+      <div id="vs" class="text-center font-bold text-2xl mx-4">VS</div>
+      <div id="computer-choice" class="flex-1 text-center"></div>
+    `;
+  }, 1500); // This restores the content 1 second after updating with the result
+}
+
+// Function to create and insert a final image into the battlefield div
+function finalSVG(userChoice, computerChoice) {
+  // Select the battlefield div
+  const battlefieldDiv = document.getElementById("battlefield");
+
+  // Get the image source from finalPicker
+  const imgSrc = finalPicker(userChoice, computerChoice);
+
+  if (imgSrc) {
+    // Create a new image element
+    const imgElement = document.createElement("img");
+    imgElement.src = imgSrc;
+
+    // Optionally set other attributes like width, height, etc.
+    imgElement.style.width = "200px";
+    imgElement.style.height = "200px";
+
+    // Optionally add a class for styling or animation
+    imgElement.classList.add("fade-in");
+
+    // Clear existing content (if needed)
+    battlefieldDiv.innerHTML = "";
+
+    // Append the new image element to the battlefield div
+    battlefieldDiv.appendChild(imgElement);
+  }
+}
+
+// Function to get the final image URL based on choices
+function finalPicker(userChoice, computerChoice) {
+  switch (`${userChoice}-${computerChoice}`) {
+    case "rock-paper":
+    case "paper-rock":
+      return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/PvR.svg";
+
+    case "rock-scissors":
+    case "scissors-rock":
+      return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/RvS.svg";
+
+    case "paper-scissors":
+    case "scissors-paper":
+      return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/SvP.svg";
+
+    case "paper-paper":
+      return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/PP.svg";
+
+    case "rock-rock":
+      return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/RR.svg";
+
+    case "scissors-scissors":
+      return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/SS.svg";
+
+    default:
+      console.error("Invalid choices");
+      return null; // Return null if choices are invalid
+  }
+}
+
+// Call observeBattlefield once when initializing
+//observeBattlefield();
+
+/* // Function to set up the MutationObserver
+function observeBattlefield() {
+  const battlefieldDiv = document.getElementById("battlefield");
+
+  // Create a MutationObserver instance
+  const observer = new MutationObserver((mutations) => {
+    // Iterate over mutations
+    mutations.forEach((mutation) => {
+      // Check if new nodes have been added
+      if (mutation.addedNodes.length > 0) {
+        // Get the newly added image
+        const imgElement = battlefieldDiv.querySelector("img");
+
+        // Check the image source and react accordingly
+        if (imgElement) {
+          switch (imgElement.src) {
+            case "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/PvR.svg":
+              // Handle rock vs paper
+              console.log("Rock vs Paper");
+              break;
+
+            case "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/RvS.svg":
+              // Handle rock vs scissors
+              console.log("Rock vs Scissors");
+              break;
+
+            case "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/SvP.svg":
+              // Handle paper vs scissors
+              console.log("Paper vs Scissors");
+              break;
+
+            case "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/RR.svg":
+              // Handle rock vs paper
+              console.log("Rock vs Rock");
+              break;
+
+            case "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/SS.svg":
+              // Handle rock vs scissors
+              console.log("Scissors vs Scissors");
+              break;
+
+            case "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/PP.svg":
+              // Handle paper vs scissors
+              console.log("Paper vs Paper");
+              break;
+            // Add cases for other scenarios as needed
+            default:
+              console.log("Unknown matchup");
+              break;
+          }
+        }
+      }
+    });
+  });
+
+  // Configure the observer
+  observer.observe(battlefieldDiv, { childList: true });
+}
+ */
+/* // Function to update the battlefield with result images
+function updateBattlefieldWithResult(userChoice, computerChoice) {
+  const battlefieldDiv = document.getElementById("battlefield");
+
+  // Clear existing content
   battlefieldDiv.innerHTML = "";
 
-  // Create a new img element
+  // Create an image element based on the result
   const imgElement = document.createElement("img");
+  let imgSrc = "";
 
-  // Set the src attribute of the img element
-  imgElement.src =
-    "https://raw.githubusercontent.com/Lazerson-Design/RPS/395545eb0d14a6b40d72eed1a26390f0286e2a8e/Rock.svg";
+  // Determine the image source based on the choices
+  switch (true) {
+    case userChoice === "rock" && computerChoice === "paper":
+      imgSrc =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/PvR.svg";
+      break;
 
-  // Optionally set other attributes like width or height
-  imgElement.style.width = "200px"; // Adjust as needed
-  imgElement.style.height = "200px"; // Adjust as needed
-  imgElement.style.opacity = "0"; //starting opacity
-  imgElement.style.animationDelay = "500ms"; //animationsverzögerung
+    case userChoice === "rock" && computerChoice === "scissors":
+      imgSrc =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/RvS.svg";
+      break;
 
-  // Add the CSS class for animation
-  imgElement.classList.add("move-down-fade-in");
+    case userChoice === "paper" && computerChoice === "scissors":
+      imgSrc =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/SvP.svg";
+      break;
 
-  // Append the img element to the div
+    case userChoice === "rock" && userChoice === computerChoice:
+      imgSrc =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/RR.svg"; // Rock vs Rock
+      break;
+
+    case userChoice === "paper" && userChoice === computerChoice:
+      imgSrc =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/PP.svg"; // Paper vs Paper
+      break;
+
+    case userChoice === "scissors" && userChoice === computerChoice:
+      imgSrc =
+        "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/SS.svg"; // Scissors vs Scissors
+      break;
+
+    default:
+      imgSrc = ""; // Default case if no match is found
+      break;
+  }
+
+  // Set the image source and style
+  imgElement.src = imgSrc;
+  imgElement.style.width = "200px";
+  imgElement.style.height = "200px";
+  imgElement.style.opacity = "0"; // Starting opacity
+  imgElement.style.animationDelay = "1500ms"; // Animation delay
+  imgElement.classList.add("fade-in"); // Ensure this class is defined in your CSS
+
+  // Append the image element to the battlefield div
   battlefieldDiv.appendChild(imgElement);
 }
+ */
+//BATTLEFIELD
+// // Function to ensure the battlefield has the required sections
+// function updateBattlefield() {
+//   const battlefieldDiv = document.getElementById("battlefield");
+
+//   // Clear any existing content
+//   userChoiceDiv.innerHTML = "";
+
+//   // Create user-choice div if it doesn't exist
+//   let userChoiceDiv = document.getElementById("user-choice");
+
+//   if (!userChoiceDiv) {
+//     userChoiceDiv = document.createElement("div");
+//     userChoiceDiv.id = "user-choice";
+//     userChoiceDiv.classList.add("flex-1", "text-center");
+//     battlefieldDiv.appendChild(userChoiceDiv);
+//   }
+
+//   // Create computer-choice div if it doesn't exist
+//   let computerChoiceDiv = document.getElementById("computer-choice");
+//   if (!computerChoiceDiv) {
+//     computerChoiceDiv = document.createElement("div");
+//     computerChoiceDiv.id = "computer-choice";
+//     computerChoiceDiv.classList.add("flex-1", "text-center");
+//     battlefieldDiv.appendChild(computerChoiceDiv);
+//   }
+
+//   // Add flex container class to battlefieldDiv if not already present
+//   if (!battlefieldDiv.classList.contains("flex")) {
+//     battlefieldDiv.classList.add("flex", "justify-between");
+//   }
+// }
+
+// // Function to update the battlefield with the user's choice
+// function fieldUser() {
+//   updateBattlefield();
+
+//   const userChoiceDiv = document.getElementById("user-choice");
+
+//   // Create a new img element
+//   const imgElement = document.createElement("img");
+//   imgElement.src =
+//     "https://raw.githubusercontent.com/Lazerson-Design/RPS/395545eb0d14a6b40d72eed1a26390f0286e2a8e/Rock.svg";
+
+//   // Optionally set other attributes like width or height
+//   imgElement.style.width = "200px"; // Adjust as needed
+//   imgElement.style.height = "200px"; // Adjust as needed
+//   imgElement.style.opacity = "0"; // Starting opacity
+//   imgElement.style.animationDelay = "500ms"; //animationsverzögerung
+
+//   // Add the CSS class for animation
+//   imgElement.classList.add("move-down-fade-in");
+
+//   // Append the img element to the div
+//   battlefieldDiv.appendChild(imgElement);
+// }
+
+// // Function to update the battlefield with the computer's choice
+// function fieldComputer(computerChoice) {
+//   updateBattlefield();
+
+//   const computerChoiceDiv = document.getElementById("computer-choice");
+
+//   // Clear any existing content
+//   computerChoiceDiv.innerHTML = "";
+
+//   // Create a new img element
+//   const imgElement = document.createElement("img");
+
+//   // Set the src attribute based on the computer's choice
+//   switch (computerChoice) {
+//     case "rock":
+//       imgElement.src =
+//         "https://raw.githubusercontent.com/Lazerson-Design/RPS/395545eb0d14a6b40d72eed1a26390f0286e2a8e/Rock.svg";
+//       break;
+//     case "paper":
+//       imgElement.src =
+//         "https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Paper.svg"; // Update with correct URL
+//       break;
+//     case "scissors":
+//       imgElement.src =
+//         "https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Scissors.svg"; // Update with correct URL
+//       break;
+//   }
+
+//   imgElement.style.width = "200px"; // Adjust as needed
+//   imgElement.style.height = "200px"; // Adjust as needed
+//   imgElement.style.opacity = "0"; // Starting opacity
+//   imgElement.style.animationDelay = "500ms"; //animationsverzögerung
+
+//   // Add the CSS class for animation
+//   imgElement.classList.add("move-down-fade-in");
+
+//   // Append the img element to the div
+//   battlefieldDiv.appendChild(imgElement);
+// }
 
 // Add event listeners to buttons
 document.getElementById("rock").addEventListener("click", () => {
