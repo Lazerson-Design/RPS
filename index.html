@@ -5,15 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper Scissors Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <head>
+      <!-- Other head elements -->
+      <style>
+        @keyframes moveDownAndFadeIn {
+          from {
+            transform: translateY(
+              -20px
+            ); /* Start from above the visible area */
+            opacity: 0; /* Start with opacity 0 */
+          }
+          to {
+            transform: translateY(0); /* End at the original position */
+            opacity: 1; /* End with full opacity */
+          }
+        }
+
+        .move-down-fade-in {
+          animation: moveDownAndFadeIn 500ms forwards; /* Apply the animation */
+        }
+
+        @keyframes moveDownAndFade {
+          to {
+            transform: translateY(20px);
+            opacity: 0;
+          }
+        }
+
+        .move-down-fade {
+          animation: moveDownAndFade 500ms forwards;
+        }
+      </style>
+    </head>
   </head>
   <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full md:w-96">
       <div class="mb-4">
         <h2 class="text-2xl font-bold">Score</h2>
-        <div class="flex justify-between mt-2">
-          <div>User: <span id="user-score">0</span></div>
-          <div>Computer: <span id="computer-score">0</span></div>
+        <section class="container mx-auto p-0">
+          <div class="grid grid-cols-5">
+            <div class="square flex items-center">
+              <!-- Content 1 -->
+              <img
+                src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Human.svg"
+                alt="User Icon"
+                style="width: 100px; vertical-align: middle"
+              />
+            </div>
+            <div class="square flex items-center justify-center">
+              <!-- Content 2 -->
+              <span
+                id="user-score"
+                style="
+                  font-size: clamp(3rem, 4vw, 6rem);
+                  font-weight: 700;
+                  color: red;
+                "
+                >0</span
+              >
+            </div>
+            <div class="square flex items-center justify-center">
+              <!-- Content 3 -->
+              <span
+                style="
+                  font-size: 3rem;
+                  font-weight: 600;
+                  position: relative;
+                  top: -4px;
+                "
+                >:</span
+              >
+            </div>
+            <div class="square flex items-center justify-center">
+              <!-- Content 4 -->
+              <span
+                id="computer-score"
+                style="
+                  font-size: clamp(3rem, 4vw, 6rem);
+                  font-weight: 700;
+                  color: blue;
+                "
+                >0</span
+              >
+            </div>
+            <div class="square flex items-center justify-center">
+              <!-- Content 5 -->
+              <img
+                src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Robot.svg"
+                alt="Computer Icon"
+                style="width: 100px; vertical-align: middle"
+              />
+            </div>
+          </div>
+        </section>
+        <!-- section alt
+        <div class="flex justify-around mt-2">
+          <div>
+            <img
+              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Human.svg"
+              alt="User Icon"
+              style="width: 50px; vertical-align: middle"
+            />
+            <span
+              id="user-score"
+              style="font-size: 4rem; font-weight: 700; color: red"
+              >0</span
+            >
+            <span style="font-size: 4rem; font-weight: 700">:</span>
+            <span
+              id="computer-score"
+              style="font-size: 4rem; font-weight: 700; color: blue"
+              >0</span
+            >
+          </div>
+          <div>
+            <img
+              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Robot.svg"
+              alt="Computer Icon"
+              style="width: 50px; vertical-align: middle"
+            />
+          </div>
         </div>
+        -->
       </div>
       <div class="mb-4">
         <h3 class="text-xl font-semibold mb-2">Choose your Fighter:</h3>
@@ -50,8 +163,14 @@
           </button>
         </div>
       </div>
+
       <div class="mb-4">
         <h3 class="text-xl font-semibold mb-2">FIGHT!</h3>
+
+        <div id="battlefield" class="bg-gray-200 py-4 rounded">
+          Prepare to fight!
+        </div>
+
         <div id="result" class="bg-gray-200 py-4 rounded">No result yet</div>
       </div>
       <button

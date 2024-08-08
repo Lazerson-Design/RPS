@@ -55,7 +55,72 @@ function playRound() {
   //Es wird etsprechend in di div eingefügt was man gewählt hat, was Computer gewählt hat und wer gewonnen hat
   updateScores(); //funktion zum updaten des scoreboards wird aufgerufen
   userSelection = ""; // Reset user selection after the round
+  //moveRock(userSelection); //Funktion die die SVG bewegt
+  moveRock();
+  updateBattlefield();
   unmarkSelection(); // Unmark the selection after the round
+}
+
+// Function to move the SVG based on the user selection
+function moveSVG(userSelection) {
+  if (userSelection === "rock") {
+    moveRock();
+  }
+}
+
+// Function to move the SVG inside the button with id="rock"
+function moveRock() {
+  const rockButton = document.getElementById("rock");
+  const svgElement = rockButton.querySelector("img");
+  if (svgElement) {
+    svgElement.classList.add("move-down-fade");
+  }
+}
+
+// Function to move the SVG inside the button with id="paper"
+function movePaper() {
+  const paperButton = document.getElementById("paper");
+  const svgElement = paperButton.querySelector("img");
+  if (svgElement) {
+    svgElement.classList.add("move-down-fade");
+  }
+}
+
+// Function to move the SVG inside the button with id="scissors"
+function moveScissors() {
+  const scissorsButton = document.getElementById("scissors");
+  const svgElement = scissorsButton.querySelector("img");
+  if (svgElement) {
+    svgElement.classList.add("move-down-fade");
+  }
+}
+
+//BATTLEFIELD
+function updateBattlefield() {
+  // Select the div with id "battlefield"
+  const battlefieldDiv = document.getElementById("battlefield");
+
+  // Clear the text content of the div
+  battlefieldDiv.innerHTML = "";
+
+  // Create a new img element
+  const imgElement = document.createElement("img");
+
+  // Set the src attribute of the img element
+  imgElement.src =
+    "https://raw.githubusercontent.com/Lazerson-Design/RPS/395545eb0d14a6b40d72eed1a26390f0286e2a8e/Rock.svg";
+
+  // Optionally set other attributes like width or height
+  imgElement.style.width = "200px"; // Adjust as needed
+  imgElement.style.height = "200px"; // Adjust as needed
+  imgElement.style.opacity = "0"; //starting opacity
+  imgElement.style.animationDelay = "500ms"; //animationsverzögerung
+
+  // Add the CSS class for animation
+  imgElement.classList.add("move-down-fade-in");
+
+  // Append the img element to the div
+  battlefieldDiv.appendChild(imgElement);
 }
 
 // Add event listeners to buttons
