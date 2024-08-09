@@ -3,228 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rock Paper Scissors Game</title>
+    <title>Rock Paper Scissors Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <head>
-      <!-- Other head elements -->
-      <style>
-        @font-face {
-    font-family: 'SSF4 ABUKET';
-    src: url('https://lazerson-design.github.io/RPS/Font/SSF4%20ABUKET.ttf') format('truetype');
-}
+    <style>
+      @font-face {
+        font-family: "SSF4 ABUKET";
+        src: url("https://github.com/Lazerson-Design/RPS/blob/main/Font/SSF4%20ABUKET.ttf")
+          format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
 
-#font, #vs {
-  font-family: 'SSF4 ABUKET', sans-serif; /* Fallback to sans-serif */
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 16px;
-}
+      body {
+        font-family: "SSF4 ABUKET", sans-serif;
+      }
 
-#result {
-  font-family: 'SSF4 ABUKET', sans-serif; /* Fallback to sans-serif */
-  font-size: 30px;
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 16px;
-}
+      .menu-button {
+        @apply bg-blue-500 text-white py-2 px-4 rounded-lg text-lg font-semibold;
+      }
 
-        @keyframes moveDownAndFadeIn {
-          from {
-            transform: translateY(
-              -20px
-            ); /* Start from above the visible area */
-            opacity: 0; /* Start with opacity 0 */
-          }
-          to {
-            transform: translateY(0); /* End at the original position */
-            opacity: 1; /* End with full opacity */
-          }
-        }
-
-        .move-down-fade-in {
-          animation: moveDownAndFadeIn 500ms forwards; /* Apply the animation */
-        }
-
-        @keyframes moveDownAndFade {
-          to {
-            transform: translateY(20px);
-            opacity: 0;
-          }
-        }
-
-        .move-down-fade {
-          animation: moveDownAndFade 500ms forwards;
-        }
-
-        .move-up-fade-in {
-          animation: moveUpAndFadeIn 500ms 2s forwards;
-        }
-
-        /* Define the keyframes for the fade-in animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Apply the fade-in animation to the element */
-.fade-in {
-  animation: fadeIn 10ms ease-in forwards; /* Adjust duration and timing function as needed */
-}
-      </style>
-    </head>
+      .menu-container {
+        @apply flex flex-col items-center justify-center min-h-screen bg-gray-100;
+      }
+    </style>
   </head>
-  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full md:w-96">
-      <div class="mb-4">
-        <h2 class="text-2xl font-bold">Score</h2>
-        <section class="container mx-auto p-0">
-          <div class="grid grid-cols-5">
-            <div class="square flex items-center">
-              <!-- Content 1 -->
-              <img
-                src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Human.svg"
-                alt="User Icon"
-                style="width: 100px; vertical-align: middle"
-              />
-            </div>
-            <div class="square flex items-center justify-center">
-              <!-- Content 2 -->
-              <span
-                id="user-score"
-                style="
-                  font-size: clamp(3rem, 4vw, 6rem);
-                  font-weight: 700;
-                  color: #f87171;
-                "
-                >0</span
-              >
-            </div>
-            <div class="square flex items-center justify-center">
-              <!-- Content 3 -->
-              <span
-                style="
-                  font-size: 3rem;
-                  font-weight: 600;
-                  position: relative;
-                  top: -4px;
-                  color: #0a0a0a;
-                "
-                >:</span
-              >
-            </div>
-            <div class="square flex items-center justify-center">
-              <!-- Content 4 -->
-              <span
-                id="computer-score"
-                style="
-                  font-size: clamp(3rem, 4vw, 6rem);
-                  font-weight: 700;
-                  color: #60a5fa;
-                "
-                >0</span
-              >
-            </div>
-            <div class="square flex items-center justify-center">
-              <!-- Content 5 -->
-              <img
-                src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Robot.svg"
-                alt="Computer Icon"
-                style="width: 100px; vertical-align: middle"
-              />
-            </div>
-          </div>
-        </section>
-        <!-- section alt
-        <div class="flex justify-around mt-2">
-          <div>
-            <img
-              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Human.svg"
-              alt="User Icon"
-              style="width: 50px; vertical-align: middle"
-            />
-            <span
-              id="user-score"
-              style="font-size: 4rem; font-weight: 700; color: red"
-              >0</span
-            >
-            <span style="font-size: 4rem; font-weight: 700">:</span>
-            <span
-              id="computer-score"
-              style="font-size: 4rem; font-weight: 700; color: blue"
-              >0</span
-            >
-          </div>
-          <div>
-            <img
-              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Robot.svg"
-              alt="Computer Icon"
-              style="width: 50px; vertical-align: middle"
-            />
-          </div>
-        </div>
-        -->
-      </div>
-      <div class="mb-4">
-        <h3 id=font class="text-xl font-semibold mb-2">Choose your Fighter:</h3>
-        <div id="selection" class="flex justify-around gap-3">
-          <button
-            class="bg-blue-200 rounded flex items-center justify-center"
-            id="rock"
+  <body
+    class="menu-container bg-gray-100 flex items-center justify-center min-h-screen"
+  >
+    <div class="text-center bg-white p-6 rounded-lg shadow-lg w-full md:w-96">
+      <h1 class="text-4xl font-bold mb-4">Rock Paper Scissors</h1>
+      <ul class="space-y-4 flex flex-col items-center">
+        <li class="bg-gray-200 py-4 rounded w-full">
+          <a href="best-of-5.html" class="menu-button block text-center"
+            >Best of 5</a
           >
-            <img
-              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/395545eb0d14a6b40d72eed1a26390f0286e2a8e/Rock.svg"
-              alt="SVG Icon"
-              class="w-40 h-40"
-            />
-          </button>
-          <button
-            class="bg-emerald-200 rounded flex items-center justify-center"
-            id="paper"
+        </li>
+        <li class="bg-gray-200 py-4 rounded w-full">
+          <a href="infinite.html" class="menu-button block text-center"
+            >Infinite Mode</a
           >
-            <img
-              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Paper.svg"
-              alt="SVG Icon"
-              class="w-40 h-40"
-            />
-          </button>
-          <button
-            class="bg-red-200 rounded flex items-center justify-center"
-            id="scissors"
+        </li>
+        <li class="bg-gray-200 py-4 rounded w-full">
+          <a href="multiplayer.html" class="menu-button block text-center"
+            >Multiplayer</a
           >
-            <img
-              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/baace9b58471b21efb42129fb0dc77887de24c7e/Scissors.svg"
-              alt="SVG Icon"
-              class="w-40 h-40"
-            />
-          </button>
-        </div>
-      </div>
-
-      <div class="mb-4">
-        <h3 id=font class="text-xl font-semibold mb-2">FIGHT!</h3>
-      
-        <div
-          id="battlefield"
-          class="bg-gray-200 py-4 rounded flex justify-around items-center"
-        >
-          <div id="user-choice" class="flex-1 text-center"></div>
-          <div id="vs" class="text-center font-bold text-2xl mx-4">VS</div>
-          <div id="computer-choice" class="flex-1 text-center"></div>
-        </div>
-      
-        <div id="result" class="bg-gray-200 py-4 rounded mt-4">No result yet</div>
-        
-        <button
-          class="bg-purple-500 text-white py-2 px-4 rounded mt-4"
-          id="play-button"
-        >
-          Play Round
-        </button>
-      </div>
-    <script src="script.js"></script>
+        </li>
+      </ul>
+    </div>
   </body>
 </html>

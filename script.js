@@ -8,6 +8,11 @@ function getComputerChoice() {
   const choices = ["rock", "paper", "scissors"]; //Array mit den 3 Optionen
   const randomIndex = Math.floor(Math.random() * choices.length); //pickt eine der Optionen
   //random ist random von 0 bis 1, floor rundet das ganze
+
+  console.log("Computer choices array:", choices); // Log the choices array
+  console.log("Random index selected:", randomIndex); // Log the random index
+  console.log("Computer choice:", choices[randomIndex]); // Log the final choice
+
   return choices[randomIndex]; //gibt den Index des im Array befindenden Option
   //[0]-rock, [1]-paper, [2]-scissors
 }
@@ -50,23 +55,25 @@ function updateScores() {
 
 // Function to handle the play button click event
 function playRound() {
+  console.log("playRound function called");
   if (!userSelection) {
     alert("Please make a selection!");
     return;
   }
 
-  const computerChoice = getComputerChoice();
-  const result = determineWinner(userSelection, computerChoice);
+  const computerChoice = getComputerChoice(); // Assign the computer's choice
+  const userChoice = userSelection; // Assign the user's choice from the selection
 
-  document.getElementById("result").innerText = `${result}`;
+  console.log("User choice before determining winner:", userChoice); // Debugging log
+  console.log("Computer choice before determining winner:", computerChoice); // Debugging log
+
+  determineWinner(userChoice, computerChoice);
   updateScores();
-
-  updateBattlefield(userSelection, computerChoice);
+  updateBattlefield(userChoice, computerChoice); // Pass choices to updateBattlefield
   unmarkSelection();
+  clearBattlefield(userChoice, computerChoice); // Pass choices to clearBattlefield
 
   userSelection = ""; // Reset user selection after updating the battlefield
-
-  clearBattlefield(userSelection, computerChoice);
 }
 
 // Function to move the SVG based on the user selection
@@ -183,16 +190,18 @@ function updateBattlefield(userChoice, computerChoice) {
 
 // Function to clear and update the battlefield with result and restore original structure
 function clearBattlefield(userChoice, computerChoice) {
-  const battlefieldDiv = document.getElementById("battlefield");
+  console.log("Clearing battlefield with choices:", userChoice, computerChoice); // Debugging log
+
+  /*   const battlefieldDiv = document.getElementById("battlefield");
 
   // Add a 1.5-second delay before clearing the content
   setTimeout(() => {
     battlefieldDiv.innerHTML = ""; // Clear all content inside the battlefield div
-  }, 1500);
+  }, 2600); */
 
   // After clearing, update the battlefield with the result
   setTimeout(() => {
-    finalSVG(); // Update the battlefield with the result
+    finalSVG(userChoice, computerChoice); // Correctly pass choices to finalSVG
   }, 1500);
 
   // Add a 1-second delay before restoring the original structure
@@ -203,11 +212,13 @@ function clearBattlefield(userChoice, computerChoice) {
       <div id="vs" class="text-center font-bold text-2xl mx-4">VS</div>
       <div id="computer-choice" class="flex-1 text-center"></div>
     `;
-  }, 1500); // This restores the content 1 second after updating with the result
+  }, 1700); // This restores the content 1 second after updating with the result
 }
 
 // Function to create and insert a final image into the battlefield div
 function finalSVG(userChoice, computerChoice) {
+  console.log("Final SVG called with choices:", userChoice, computerChoice); // Debugging log
+
   // Select the battlefield div
   const battlefieldDiv = document.getElementById("battlefield");
 
@@ -231,31 +242,46 @@ function finalSVG(userChoice, computerChoice) {
 
     // Append the new image element to the battlefield div
     battlefieldDiv.appendChild(imgElement);
+  } else {
+    console.error(
+      "No valid image source found for choices:",
+      userChoice,
+      computerChoice
+    );
   }
 }
 
 // Function to get the final image URL based on choices
 function finalPicker(userChoice, computerChoice) {
+  console.log("User choice:", userChoice); // Log the user's choice
+  console.log("Computer choice:", computerChoice); // Log the computer's choice
+
   switch (`${userChoice}-${computerChoice}`) {
     case "rock-paper":
     case "paper-rock":
+      console.log("rock-paper or paper-rock case selected");
       return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/PvR.svg";
 
     case "rock-scissors":
     case "scissors-rock":
+      console.log("rock-scissors or scissors-rock case selected");
       return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/RvS.svg";
 
     case "paper-scissors":
     case "scissors-paper":
+      console.log("paper-scissors or scissors-paper case selected");
       return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/SvP.svg";
 
     case "paper-paper":
+      console.log("paper-paper case selected");
       return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/PP.svg";
 
     case "rock-rock":
+      console.log("rock-rock case selected");
       return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/RR.svg";
 
     case "scissors-scissors":
+      console.log("scissors-scissors case selected");
       return "https://raw.githubusercontent.com/Lazerson-Design/RPS/66ec041a2204d212e4985f26827e5f3c0b11079b/SS.svg";
 
     default:
@@ -516,6 +542,8 @@ function markSelection(selection) {
   document
     .getElementById(selection)
     .classList.add("ring-4", "ring-offset-2", "ring-indigo-500");
+  // Reset battlefield when user makes a new selection
+  roundReset();
 }
 
 // Function to unmark the selected button
@@ -524,4 +552,14 @@ function unmarkSelection() {
   document.querySelectorAll("#selection button").forEach((button) => {
     button.classList.remove("ring-4", "ring-offset-2", "ring-indigo-500");
   });
+}
+
+//resetet das Feld nach der Runde
+function roundReset() {
+  const battlefieldDiv = document.getElementById("battlefield");
+  battlefieldDiv.innerHTML = `
+    <div id="user-choice" class="flex-1 text-center"></div>
+    <div id="vs" class="text-center font-bold text-2xl mx-4">VS</div>
+    <div id="computer-choice" class="flex-1 text-center"></div>
+  `;
 }
