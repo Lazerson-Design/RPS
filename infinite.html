@@ -5,87 +5,129 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rock Paper Scissors Game</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <head>
-      <!-- Other head elements -->
-      <style>
-        @font-face {
-  font-family: 'SSF4 ABUKET';
-  src: url('https://github.com/Lazerson-Design/RPS/blob/main/Font/SSF4%20ABUKET.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
+    <!-- Google Fonts Link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap"
+      rel="stylesheet"
+    />
 
-#font, #vs {
-  font-family: 'SSF4 ABUKET', sans-serif; /* Fallback to sans-serif */
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 16px;
-}
+    <!-- Other head elements -->
+    <style>
+      @font-face {
+        font-family: "SSF4 ABUKET";
+        src: url("https://github.com/Lazerson-Design/RPS/blob/main/Font/SSF4%20ABUKET.ttf")
+          format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
 
-#result {
-  font-family: 'SSF4 ABUKET', sans-serif; /* Fallback to sans-serif */
-  font-size: 30px;
-  padding: 16px;
-  border-radius: 8px;
-  margin-top: 16px;
-}
+      #font,
+      #vs {
+        font-family: "Permanent Marker", cursive; /* Fallback to sans-serif */
+        padding: 16px;
+        border-radius: 8px;
+        margin-top: 16px;
+      }
 
-        @keyframes moveDownAndFadeIn {
-          from {
-            transform: translateY(
-              -20px
-            ); /* Start from above the visible area */
-            opacity: 0; /* Start with opacity 0 */
-          }
-          to {
-            transform: translateY(0); /* End at the original position */
-            opacity: 1; /* End with full opacity */
-          }
+      #play-button {
+        font-family: "Permanent Marker", cursive; /* Fallback to sans-serif */
+        padding: 16px;
+        border-radius: 8px;
+        text-shadow: -1px -1px 0px #000, /* Top left shadow */ 1px -1px 0px #000,
+          /* Top right shadow */ -1px 1px 0px #000,
+          /* Bottom left shadow */ 1px 1px 0px #000; /* Bottom right shadow */
+      }
+
+      #result {
+        font-family: "Permanent Marker", cursive; /* Fallback to sans-serif */
+        font-size: 30px;
+        padding: 16px;
+        border-radius: 8px;
+        margin-top: 16px;
+      }
+
+      #vs {
+        display: none; /* Hide the VS element initially */
+      }
+
+      #battlecontainer {
+        position: relative; /* Set this to allow absolute positioning within it */
+      }
+
+      #battlefield {
+        position: relative; /* Ensure this is positioned relative if needed */
+      }
+
+      #result {
+        position: absolute; /* Position the result absolutely */
+        top: 1; /* Align with the top of the container */
+        left: 0; /* Align with the left of the container */
+        right: 0; /* Align with the right of the container */
+        bottom: 0; /* Align with the bottom of the container */
+        display: flex;
+        align-items: center; /* Center content vertically */
+        justify-content: center; /* Center content horizontally */
+        z-index: 10; /* Ensure it overlays other content */
+        /* Add any additional styling as needed */
+        text-shadow: -1px -1px 0px #ff0000,
+          /* Top left shadow */ 1px -1px 0px #ffffff,
+          /* Top right shadow */ -1px 1px 0px #ff0000,
+          /* Bottom left shadow */ 1px 1px 0px #ffffff; /* Bottom right shadow */
+      }
+
+      @keyframes moveDownAndFadeIn {
+        from {
+          transform: translateY(20px); /* Start from above the visible area */
+          opacity: 0; /* Start with opacity 0 */
         }
-
-        .move-down-fade-in {
-          animation: moveDownAndFadeIn 500ms forwards; /* Apply the animation */
+        to {
+          transform: translateY(0); /* End at the original position */
+          opacity: 1; /* End with full opacity */
         }
+      }
 
-        @keyframes moveDownAndFade {
-          to {
-            transform: translateY(20px);
-            opacity: 0;
-          }
+      .move-down-fade-in {
+        animation: moveDownAndFadeIn 500ms forwards; /* Apply the animation */
+      }
+
+      @keyframes moveDownAndFade {
+        to {
+          transform: translateY(-20px);
+          opacity: 0;
         }
+      }
 
-        .move-down-fade {
-          animation: moveDownAndFade 500ms forwards;
+      .move-down-fade {
+        animation: moveDownAndFade 500ms forwards;
+      }
+
+      .move-up-fade-in {
+        animation: moveUpAndFadeIn 500ms 2s forwards;
+      }
+
+      /* Define the keyframes for the fade-in animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
-
-        .move-up-fade-in {
-          animation: moveUpAndFadeIn 500ms 2s forwards;
+        to {
+          opacity: 1;
         }
+      }
 
-        /* Define the keyframes for the fade-in animation */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Apply the fade-in animation to the element */
-.fade-in {
-  animation: fadeIn 10ms ease-in forwards; /* Adjust duration and timing function as needed */
-}
-      </style>
-    </head>
+      /* Apply the fade-in animation to the element */
+      .fade-in {
+        animation: fadeIn 10ms ease-in forwards; /* Adjust duration and timing function as needed */
+      }
+    </style>
   </head>
-  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <body
+    id="body"
+    class="bg-gray-100 flex items-center justify-center min-h-screen"
+  >
     <div class="bg-white p-6 rounded-lg shadow-lg text-center w-full md:w-96">
-
-      <!-- Menu Link -->
-      <div class="bg-gray-200 py-4 rounded mt-4">
-<a href="index.html" class="text-l font-semibold">Back to Menu</a>
-      </div>
       <div class="mb-4">
         <h2 class="text-2xl font-bold">Score</h2>
         <section class="container mx-auto p-0">
@@ -146,37 +188,62 @@
           </div>
         </section>
         <!-- section alt
-        <div class="flex justify-around mt-2">
-          <div>
-            <img
+          <div class="flex justify-around mt-2">
+            <div>
+              <img
               src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Human.svg"
               alt="User Icon"
               style="width: 50px; vertical-align: middle"
-            />
-            <span
+              />
+              <span
               id="user-score"
               style="font-size: 4rem; font-weight: 700; color: red"
               >0</span
-            >
-            <span style="font-size: 4rem; font-weight: 700">:</span>
-            <span
+              >
+              <span style="font-size: 4rem; font-weight: 700">:</span>
+              <span
               id="computer-score"
               style="font-size: 4rem; font-weight: 700; color: blue"
               >0</span
-            >
-          </div>
+              >
+            </div>
           <div>
             <img
-              src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Robot.svg"
-              alt="Computer Icon"
-              style="width: 50px; vertical-align: middle"
+            src="https://raw.githubusercontent.com/Lazerson-Design/RPS/677c174ecdb9467eada6b3d91e7a4aadb9a07941/Robot.svg"
+            alt="Computer Icon"
+            style="width: 50px; vertical-align: middle"
             />
           </div>
         </div>
-        -->
-      </div>
+      --></div>
+
+      <!-- Battlefield Section -->
       <div class="mb-4">
-        <h3 id=font class="text-xl font-semibold mb-2">Choose your Fighter:</h3>
+        <!-- <h3 id=font class="text-xl font-semibold mb-2">FIGHT!</h3> -->
+
+        <!-- Parent Container -->
+        <div
+          id="battlecontainer"
+          class="bg-gray-200 py-4 rounded min-h-[232px]"
+        >
+          <!-- Battlefield Container -->
+          <div id="battlefield" class="flex justify-around items-center">
+            <div id="user-choice" class="flex-1 text-center"></div>
+            <div id="vs" class="text-center font-bold text-2xl mx-4">VS</div>
+            <div id="computer-choice" class="flex-1 text-center"></div>
+          </div>
+
+          <!-- Result Section (Positioned Relative to Parent Container) -->
+          <div id="result" class="result"></div>
+        </div>
+        <!-- Battlefield Section -->
+      </div>
+
+      <!-- Choose Fighter Section -->
+      <div class="mb-4">
+        <h3 id="font" class="text-xl font-semibold mb-2">
+          Choose your Fighter:
+        </h3>
         <div id="selection" class="flex justify-around gap-3">
           <button
             class="bg-blue-200 max-h-[100px] rounded flex items-center justify-center"
@@ -210,28 +277,23 @@
           </button>
         </div>
       </div>
+      <!-- Choose Fighter Section -->
 
-      <div class="mb-4">
-        <h3 id=font class="text-xl font-semibold mb-2">FIGHT!</h3>
-      
-        <div
-          id="battlefield"
-          class="bg-gray-200 py-4 rounded flex justify-around items-center min-h-[232px]"
-        >
-          <div id="user-choice" class="flex-1 text-center"></div>
-          <div id="vs" class="text-center font-bold text-2xl mx-4">VS</div>
-          <div id="computer-choice" class="flex-1 text-center"></div>
-        </div>
-      
-        <div id="result" class="bg-gray-200 py-4 rounded mt-4">No result yet</div>
-        
-        <button
-          class="bg-purple-500 text-white py-2 px-4 rounded mt-4"
-          id="play-button"
-        >
-          Play Round
-        </button>
+      <!-- Fight Button -->
+      <button
+        class="bg-purple-500 text-white py-2 px-4 rounded mt-4 text-xl font-semibold mb-2"
+        id="play-button"
+      >
+        FIGHT!
+      </button>
+      <!-- Fight Button -->
+
+      <!-- Menu Link -->
+      <div class="bg-gray-200 py-4 rounded mt-4">
+        <a href="index.html" class="text-l font-semibold">Back to Menu</a>
       </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
